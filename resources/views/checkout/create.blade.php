@@ -19,7 +19,7 @@
                             <div class="item-bootcamp">
                                 <img src="{{asset('images/item_bootcamp.png')}}" alt="" class="cover">
                                 <h1 class="package">
-                                    GILA BELAJAR
+                                    {{$camp->title}}
                                 </h1>
                                 <p class="description">
                                     Bootcamp ini akan mengajak Anda untuk belajar penuh mulai dari pengenalan dasar sampai membangun sebuah projek asli
@@ -28,32 +28,56 @@
                         </div>
                         <div class="col-lg-1 col-12"></div>
                         <div class="col-lg-6 col-12">
-                            <form action="#" class="basic-form">
+                            @if($errors->any())
+                            <div class="alert alert-warning" role= "alert">
+                                <strong>Oops!</strong> {{$errors->first()}}
+                            </div>
+                            @endif
+                            <form action="{{route('checkout.store', $camp->id)}}" method="post" class="basic-form">
+                                @csrf
                                 <div class="mb-4">
-                                    <label for="exampleInputEmail1" class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <label class="form-label">Full Name</label>
+                                    <input name="name" type="text" class="form-control {{$errors->has('name')?'is-invalid':''}}" value="{{@Auth::user()->name}}" aria-describedby="fullnameCheckout" required>
+                                    @if($errors->has('name'))
+                                    <p class="text-danger">{{$errors->first('name')}}</p>
+                                    @endif
                                 </div>
                                 <div class="mb-4">
-                                    <label for="exampleInputEmail1" class="form-label">Email Address</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <label class="form-label">Email Address</label>
+                                    <input name="email" type="email" class="form-control {{$errors->has('email')?'is-invalid':''}}" value="{{@Auth::user()->email}}" aria-describedby="emailCheckout" required>
+                                    @if($errors->has('email'))
+                                    <p class="text-danger">{{$errors->first('email')}}</p>
+                                    @endif
                                 </div>
                                 <div class="mb-4">
-                                    <label for="exampleInputEmail1" class="form-label">Occupation</label>
-                                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <label class="form-label">Occupation</label>
+                                    <input name="occupation" type="text" class="form-control {{$errors->has('occupation')?'is-invalid':''}}" value="{{@Auth::user()->occupation}}" aria-describedby="occupationCheckout" required>
+                                    @if($errors->has('occupation'))
+                                    <p class="text-danger">{{$errors->first('occupation')}}</p>
+                                    @endif
                                 </div>
                                 <div class="mb-4">
-                                    <label for="exampleInputEmail1" class="form-label">Card Number</label>
-                                    <input type="number" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                    <label class="form-label">Card Number</label>
+                                    <input name="card_number" type="number" class="form-control {{$errors->has('card_number')?'is-invalid':''}}" aria-describedby="cardNumberCheckout" oninput="javascript: if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="16" required>
+                                    @if($errors->has('card_number'))
+                                    <p class="text-danger">{{$errors->first('card_number')}}</p>
+                                    @endif
                                 </div>
                                 <div class="mb-5">
                                     <div class="row">
                                         <div class="col-lg-6 col-12">
-                                            <label for="exampleInputEmail1" class="form-label">Expired</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                            <label class="form-label">Expired</label>
+                                            <input name="expired" type="month" class="form-control" value="{{old('expired')?:''}}" aria-describedby="expiredCheckout" required> 
+                                            @if($errors->has('expired'))
+                                            <p class="text-danger">{{$errors->first('expired')}}</p>
+                                            @endif
                                         </div>
                                         <div class="col-lg-6 col-12">
                                             <label for="exampleInputEmail1" class="form-label">CVC</label>
-                                            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                                            <input name="cvc" type="number" class="form-control" value="{{old('cvc')?:''}}" aria-describedby="cvcCheckout" oninput="javascript: if(this.value.length > this.maxLength) this.value = this.value.slice(0, this.maxLength);" maxlength="3" required> 
+                                            @if($errors->has('cvc'))
+                                            <p class="text-danger">{{$errors->first('cvc')}}</p>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>
